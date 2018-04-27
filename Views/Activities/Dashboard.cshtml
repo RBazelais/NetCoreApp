@@ -1,0 +1,70 @@
+@{
+    ViewData["Title"] = "Dojo Activity Center";
+}
+<h2>@ViewData["Title"]</h2>
+
+@model NetCoreApp.Models.User;
+
+<div class="container">
+	<div class="col-sm-6">
+		<h3>@ViewBag.UserInfo.FirstName&#39;s Stuff </h3>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-sm-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Activity</th>
+						<th>Date and Time</th>
+						<th>Duration</th>
+						<th>Event Coordinator</th>
+						<th>No. of Participants</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach(var thing in ViewBag.AllActivities)
+					{
+						<tr>
+							<td><a asp-action="DisplayActivity" asp-route-id="@thing.ActivityId">@thing.Title</a></td>
+							<td>@thing.Date.ToString("MMM dd, yyyy hh:mm tt")</td>
+							<td>@thing.Duration</td>
+							<td>@thing.UserId</td>
+							<td>@thing.Participants.Count</td>
+							<td>
+								@if(thing.UserId == ViewBag.UserId)
+								{
+									<a asp-action="Delete" asp-route-id="@thing.ActivityId">Delete</a>
+								}
+								else
+								{
+									bool attending = false;
+									@foreach(var person in @thing.Participants)
+									{
+										@if(person.UserId == ViewBag.UserId)
+										{
+											attending = true;
+											break;
+										}
+										@if(attending == true)
+										{
+											<a asp-action="Leave" asp-route-id="@thing.ActivityId">Leave</a>
+										}
+										else
+										{
+											<a asp-action="Join" asp-route-id="@thing.ActivityId">Join</a>
+										}
+									}
+								}	
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+
+            <a asp-action="New" asp-controller="Activities"><button class="btn btn-primary" type="submit">Add New Activity</button></a> 
+            <a asp-action="Logout" asp-controller="Home"><button class="btn btn-primary" type="submit">Logout</button></a>
+		</div>
+	</div>
+</div>

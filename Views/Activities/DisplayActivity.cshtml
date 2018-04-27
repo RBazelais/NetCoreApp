@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "@ViewBag.EventInfo.Title";
+}
+<!-- <h2>@ViewData["Title"] </h2> -->
+
+
+@using NetCoreApp.Models;
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>@ViewBag.EventInfo.Title ~</h2>
+            <a asp-action="Join" asp-controller="Activities"><button class="btn btn-primary" type="submit">Join</button></a> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h4>Event Coordinator:</h4>
+            <p>@ViewBag.EventInfo.UserId</p>
+            <h3>Description:</h3>
+            <p>@ViewBag.EventInfo.Description</p>
+            <h3>Participants:</h3>
+            @foreach(var person in @ViewBag.EventInfo.Participants)
+            {
+                <p style="font-size: 24px;">@person.User.FirstName @person.User.LastName</p>
+            }
+        </div>
+
+    </div>
+    <div class="row">
+        <a asp-action="Dashboard" asp-controller="Activities"><button class="btn btn-primary" type="submit">Dashboard</button></a> 
+		<a asp-action="Logout" asp-controller="Home"><button class="btn btn-primary" type="submit">Logout</button></a>
+    </div>
+</div>
